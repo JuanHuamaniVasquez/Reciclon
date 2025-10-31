@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Virus LAN — Salas con código</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="screen-lobby" class="screen shown">
+      <div class="panel">
+        <h1>🧫 Virus — Multijugador LAN</h1>
+        <p class="muted">Crea una sala o únete con un código. Todos deben estar en la misma Wi‑Fi.</p>
+
+        <div class="lobby-grid">
+          <div class="card">
+            <h3>Crear sala</h3>
+            <input id="hostName" placeholder="Tu nombre" />
+            <input id="hostColor" type="color" value="#22c55e" />
+            <button id="createBtn" class="btn primary">Crear</button>
+          </div>
+
+          <div class="card">
+            <h3>Unirme a sala</h3>
+            <input id="joinCode" placeholder="Código (ABCDE)" maxlength="5" />
+            <input id="joinName" placeholder="Tu nombre" />
+            <input id="joinColor" type="color" value="#0ea5e9" />
+            <button id="joinBtn" class="btn">Unirme</button>
+          </div>
+        </div>
+
+        <div id="roomInfo" class="room-info hidden">
+          <h3>Sala <span id="roomCode"></span></h3>
+          <div id="playersList" class="players"></div>
+          <button id="startBtn" class="btn primary">Iniciar partida</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-game" class="screen">
+      <header class="topbar">
+        <div class="left"><span class="brand">🧬 Virus</span> <span id="badgeCode" class="pill"></span></div>
+        <div id="turnInfo" class="pill">Turno: —</div>
+        <div class="right"><span class="muted">LAN</span></div>
+      </header>
+
+      <main class="table">
+        <aside class="side">
+          <div class="stack">
+            <div id="deck" class="card back"></div>
+            <div id="deckCount" class="pill small">0</div>
+          </div>
+          <div class="stack">
+            <div id="discard" class="discard"></div>
+            <div class="muted small">Descartes</div>
+          </div>
+          <div id="log" class="log"></div>
+        </aside>
+
+        <section id="boards" class="boards"></section>
+
+        <aside class="hand-area">
+          <h3>Tu mano</h3>
+          <div id="hand" class="hand"></div>
+          <div class="actions">
+            <button id="discardSel" class="btn danger">Descartar (1–3)</button>
+          </div>
+        </aside>
+      </main>
+    </section>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <template id="cardTpl">
+    <div class="card face">
+      <div class="icon"></div>
+      <div class="title"></div>
+      <div class="tag"></div>
+    </div>
+  </template>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
