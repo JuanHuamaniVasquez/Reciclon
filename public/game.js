@@ -1,7 +1,4 @@
-// Client for Virus LAN with rooms
 const socket = io();
-
-// UI refs
 const $ = sel => document.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -22,14 +19,15 @@ const discardDiv = $('#discard');
 const toastEl = $('#toast');
 const logEl = $('#log');
 const discardSel = $('#discardSel');
+const fullBtn = $('#fullscreenBtn');
+const rotateHint = $('#rotateHint');
 
 let myId = null;
-let lobby = null; // {code, hostId, players, started}
-let state = null; // server snapshot
-let myHand = [];  // personal hand array
-let selected = { handIndex:null, action:null }; // action needs target
+let lobby = null;
+let state = null;
+let myHand = [];
+let selected = { handIndex:null, action:null };
 
-// Join events
 createBtn.onclick = ()=>{
   const name = $('#hostName').value || 'Jugador';
   const color = $('#hostColor').value || '#22c55e';
@@ -41,15 +39,13 @@ joinBtn.onclick = ()=>{
   const color = $('#joinColor').value || '#0ea5e9';
   socket.emit('joinRoom', {code, name, color});
 };
-
 startBtn.onclick = ()=> socket.emit('startGame');
 
 socket.on('connect', ()=>{ myId = socket.id; });
 socket.on('errorMsg', m => toast(m));
-
 socket.on('lobby', data => {
   lobby = data;
-  $('#roomInfo').classList.remove('hidden');
+  roomInfo.classList.remove('hidden');
   roomCodeEl.textContent = data.code;
   playersList.innerHTML = '';
   data.players.forEach(p=>{
@@ -62,14 +58,12 @@ socket.on('lobby', data => {
   badgeCode.textContent = `Sala ${data.code}`;
   showScreen('lobby');
 });
-
 socket.on('gameStarted', ()=>{
   showScreen('game');
   logEl.innerHTML='';
   toast('¡La partida comenzó!');
   socket.emit('requestState');
 });
-
 socket.on('state', snap => {
   state = snap;
   deckCount.textContent = snap.deckCount;
@@ -78,15 +72,9 @@ socket.on('state', snap => {
   renderBoards();
   renderDiscard();
 });
-
-socket.on('yourHand', hand => {
-  myHand = hand;
-  renderHand();
-});
-
+socket.on('yourHand', hand => { myHand = hand; renderHand(); });
 socket.on('gameOver', ({winnerIndex, winnerName})=>{
   toast(`Ganó ${winnerName} 🎉`);
-  // Return to lobby screen after short delay
   setTimeout(()=>showScreen('lobby'), 2000);
 });
 
@@ -108,7 +96,6 @@ function renderBoards(){
       if(content && content.organ){
         const card = renderFace(faceForOrgan(content.organ));
         slot.appendChild(card);
-        // badge state
         const b = document.createElement('div'); b.className='badge';
         const o = content.organ;
         if(o.immune) { b.textContent='Inmunizado'; slot.classList.add('healthy'); }
@@ -116,11 +103,9 @@ function renderBoards(){
         else if(o.vaccines>0) { b.textContent=`Vacunado x${o.vaccines}`; slot.classList.add('healthy'); }
         else { b.textContent='Sano'; slot.classList.add('healthy'); }
         slot.appendChild(b);
-        // allow as target
         slot.onclick = ()=>onTargetClick({playerIndex: idx, slotIndex: s});
       } else {
         slot.textContent = 'Vacío';
-        // still clickable for organ placement or steal target
         slot.onclick = ()=>onTargetClick({playerIndex: idx, slotIndex: s});
       }
       grid.appendChild(slot);
@@ -154,7 +139,6 @@ function renderHand(){
 }
 
 discardSel.onclick = ()=>{
-  // simple UI: click up to 3 cards to mark, then discard
   let picks = [];
   const nodes = Array.from(handDiv.children);
   nodes.forEach((node, idx)=>{
@@ -166,7 +150,7 @@ discardSel.onclick = ()=>{
         discardSel.onclick = ()=>{
           socket.emit('discardCards', {indices: picks});
           picks = [];
-          discardSel.onclick = ()=>{}; // reset, will reattach later
+          discardSel.onclick = ()=>{};
         };
       }
     };
@@ -178,10 +162,7 @@ function onTargetClick(target){
   if(selected.handIndex==null){ toast('Primero elige una carta de tu mano'); return; }
   const handIndex = selected.handIndex;
   const card = myHand[handIndex];
-  // For treatments requiring more params, we could open a small UI; keep single target for now
   if(card.type==='treatment' && card.name==='Trasplante'){
-    // we need two organs to swap: pick first (from) then second (to)
-    // quick 2-step: store in selected.action
     if(!selected.action){ selected.action = {name:'Trasplante', from: target}; toast('Selecciona el segundo órgano para intercambiar'); return; }
     else {
       const payload = { fromPlayer: selected.action.from.playerIndex, fromSlot: selected.action.from.slotIndex, toPlayer: target.playerIndex, toSlot: target.slotIndex };
@@ -191,7 +172,6 @@ function onTargetClick(target){
     }
   }
   if(card.type==='treatment' && card.name==='Ladrón de órganos'){
-    // need from (other organ) and to (my empty slot)
     if(!selected.action){ selected.action = {name:'Ladrón', from: target}; toast('Selecciona tu espacio vacío para colocarlo'); return; }
     else {
       const payload = { fromPlayer: selected.action.from.playerIndex, fromSlot: selected.action.from.slotIndex, toSlot: target.slotIndex };
@@ -201,44 +181,101 @@ function onTargetClick(target){
     }
   }
   if(card.type==='treatment' && card.name==='Error médico'){
-    // swap entire body with selected player
     const payload = { playerIndex: target.playerIndex };
     socket.emit('playCard', {handIndex, target: payload});
     selected = { handIndex:null, action:null };
     return;
   }
-  // For other cards or treatments (Contagio, Guante de látex) target may be optional; send what we have
   socket.emit('playCard', { handIndex, target });
   selected = { handIndex:null, action:null };
 }
 
-function renderFace(c){
-  const tpl = document.querySelector('#cardTpl');
-  const el = tpl.content.firstElementChild.cloneNode(true);
-  el.classList.add(c.type);
-  const icon = el.querySelector('.icon');
-  const title = el.querySelector('.title');
-  const tag = el.querySelector('.tag');
-  const iconMap = {
-    organ: {red:'❤️',green:'🫀',blue:'🧠',yellow:'🦴',wild:'🌈'},
-    virus: {red:'🧫',green:'🧫',blue:'🧫',yellow:'🧫',wild:'🧫'},
-    medicine: {red:'💊',green:'💊',blue:'💊',yellow:'💊',wild:'💊'},
-    treatment: {_: '🧬'}
-  };
-  const ico = c.type==='treatment' ? iconMap.treatment._ : iconMap[c.type][c.color||'wild'];
-  icon.textContent = ico || '🧪';
-  title.textContent = c.name || (c.type.toUpperCase());
-  tag.textContent = c.type.toUpperCase();
+// 🔄 Cada carta tiene su propia imagen personalizada
+function renderFace(c) {
+  const el = document.createElement('div');
+  el.classList.add('card','face',c.type);
+
+  function normTreat(name){
+    return (name||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\s+/g,'_');
+  }
+
+  // 🩺 Órganos
+  if (c.type === 'organ') {
+    const color = (c.color).toLowerCase();
+    if (color === 'red') src = "images/organos/peligrosos.jpeg";
+    else if (color === 'green') src = "images/organos/aprovechables.jpeg";
+    else if (color === 'blue') src = "images/organos/organicos.jpeg";
+    else if (color === 'yellow') src = "images/organos/no_aprovechables.jpeg";
+  }
+
+  // 🦠 Virus
+  else if (c.type === 'virus') {
+    const color = (c.color).toLowerCase();
+    if (color === 'red') src = "images/virus/peligrosos.jpeg";
+    else if (color === 'green') src = "images/virus/aprovechables.jpeg";
+    else if (color === 'blue') src = "images/virus/organicos.jpeg";
+    else if (color === 'yellow') src = "images/virus/no_aprovechables.jpeg";
+  }
+
+  // 💊 Medicinas
+  else if (c.type === 'medicine') {
+    const color = (c.color).toLowerCase();
+    if (color === 'red') src = "images/medicinas/peligrosos.jpeg";
+    else if (color === 'green') src = "images/medicinas/aprovechables.jpeg";
+    else if (color === 'blue') src = "images/medicinas/organicos.jpeg";
+    else if (color === 'yellow') src = "images/medicinas/no_aprovechables.jpeg";
+  }
+
+  // ⚗️ Tratamientos
+  else if (c.type === 'treatment') {
+    const key = normTreat(c.name);
+    if (key.includes('trasplante')) src = "images/tratamientos/trasplante.jpeg";
+    else if (key.includes('ladron')) src = "images/tratamientos/ladron.jpeg";
+    else if (key.includes('contagio')) src = "images/tratamientos/contagio.jpeg";
+    else if (key.includes('guante')) src = "images/tratamientos/guante.jpeg";
+    else if (key.includes('error')) src = "images/tratamientos/error_medico.jpeg";
+  }
+
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = c.name || c.type;
+  img.style.width = '100%';
+  img.style.height = '100%';
+  img.style.objectFit = 'contain';
+  img.style.borderRadius = '10px';
+  el.appendChild(img);
+
   return el;
 }
 
 function faceForOrgan(o){
-  const nameMap = {red:'Corazón', green:'Estómago', blue:'Cerebro', yellow:'Hueso', wild:'Órgano comodín'};
+  const nameMap = {red:'Corazón', green:'Estómago', blue:'Cerebro', yellow:'Hueso'};
   return {type:'organ', color:o.color, name:nameMap[o.color]||'Órgano'};
 }
 
-function toast(t){
-  toastEl.textContent = t;
-  toastEl.classList.add('show');
-  setTimeout(()=>toastEl.classList.remove('show'), 1400);
+function toast(t){ toastEl.textContent = t; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 1400); }
+
+// Pantalla completa y orientación
+fullBtn.onclick = async () => {
+  const el = document.documentElement;
+  try{
+    if (!document.fullscreenElement) {
+      await el.requestFullscreen();
+      fullBtn.textContent = "🡑 Salir";
+      if (screen.orientation && screen.orientation.lock) {
+        try { await screen.orientation.lock('landscape'); } catch(e){ }
+      }
+    } else {
+      await document.exitFullscreen();
+      fullBtn.textContent = "⛶ Pantalla completa";
+    }
+  }catch(e){ toast('No se pudo activar pantalla completa'); }
+};
+
+function checkOrientation(){
+  const portrait = window.matchMedia("(orientation: portrait)").matches;
+  rotateHint.classList.toggle('hidden', !portrait);
 }
+window.addEventListener('orientationchange', checkOrientation);
+window.addEventListener('resize', checkOrientation);
+checkOrientation();
