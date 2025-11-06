@@ -1,59 +1,310 @@
-/* Minimal UI (colorido médico) */
-:root{
-  --bg:#0b1220; --panel:#0f1b2e; --text:#eaf2ff; --muted:#9fb3ce;
-  --primary:#22c55e; --accent:#14b8a6; --danger:#ef4444; --amber:#f59e0b;
+/*  Fondo médico responsive sin repetir */
+:root {
+  --bg: #0b1220;
+  --panel: #0f1b2e;
+  --text: #eaf2ff;
+  --muted: #9fb3ce;
+  --primary: #22c55e;
+  --danger: #ef4444;
 }
-*{box-sizing:border-box} html,body{height:100%;margin:0}
-body{font-family:Poppins,system-ui,Segoe UI,Arial;background:radial-gradient(1200px 800px at 20% -10%, #173051 0%, #0b1220 60%);color:var(--text)}
-h1,h2,h3{margin:0} .muted{opacity:.75} .small{font-size:12px}
-.btn{padding:10px 14px;border-radius:12px;border:0;background:#334155;color:#fff;cursor:pointer}
-.btn.primary{background:linear-gradient(90deg,#10b981,#22c55e)}
-.btn.danger{background:linear-gradient(90deg,#ef4444,#f59e0b)}
-.pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:999px}
-.screen{display:none;min-height:100vh;align-items:center;justify-content:center;padding:18px}
-.screen.shown{display:flex}
-.panel{width:min(940px,96vw);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
-.lobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px}
-.card input{width:100%;margin:6px 0;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff}
-.room-info{margin-top:12px} .hidden{display:none}
-.players{display:flex;gap:8px;flex-wrap:wrap}
-.player-chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
 
-.topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border-bottom:1px solid rgba(255,255,255,.06)}
-.brand{font-weight:700}
+* {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
-.table{display:grid;grid-template-columns:240px 1fr 360px;gap:12px;width:100%;max-width:1300px;margin:0 auto;padding:14px}
-.side{display:flex;flex-direction:column;gap:10px}
-.stack{position:relative;width:160px;height:200px}
-.card.back{width:100%;height:100%;border-radius:16px;background:linear-gradient(135deg,#93c5fd,#86efac);border:2px solid rgba(255,255,255,.6)}
-.discard{width:160px;height:200px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.2)}
-.log{height:240px;overflow:auto;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px}
+body {
+  font-family: Poppins, system-ui, Segoe UI, Arial;
+  background: radial-gradient(1200px 800px at 20% -10%, #173051 0%, #0b1220 60%) no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text);
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
 
-.boards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.board{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px}
-.board h4{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px}
-.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.slot{height:90px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.slot .badge{position:absolute;right:6px;bottom:6px;font-size:11px;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.5)}
-.slot.healthy{box-shadow:inset 0 0 36px rgba(16,185,129,.25)}
-.slot.infected{box-shadow:inset 0 0 36px rgba(239,68,68,.28)}
+h1, h2, h3 {
+  margin: 0;
+}
 
-.face{width:110px;height:150px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;color:#111;border:2px solid #e5e7eb}
-.face .icon{font-size:28px;margin-bottom:6px}
-.face .title{font-weight:700} .face .tag{font-size:12px;opacity:.6;margin-top:4px}
-.face.organ{background:linear-gradient(180deg,#f0fdf4,#dcfce7);border-color:#a7f3d0}
-.face.virus{background:linear-gradient(180deg,#fee2e2,#fecaca);border-color:#fca5a5}
-.face.medicine{background:linear-gradient(180deg,#ecfeff,#cffafe);border-color:#a5f3fc}
-.face.treatment{background:linear-gradient(180deg,#eef2ff,#e9d5ff);border-color:#c7d2fe}
+.muted { opacity: .75; }
+.small { font-size: 12px; }
 
-.hand-area{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:10px}
-.hand{display:flex;gap:10px;flex-wrap:wrap;min-height:170px}
-.selecting{outline:2px solid var(--primary)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:8%;background:rgba(6,95,70,.9);color:#dcfce7;padding:10px 14px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s}
-.toast.show{opacity:1}
+/* Botones */
+.btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  cursor: pointer;
+}
+.btn.primary {
+  background: linear-gradient(90deg,#10b981,#22c55e);
+  border-color: transparent;
+}
+.btn.ghost {
+  background: rgba(0,0,0,.35);
+}
+.btn.danger {
+  background: linear-gradient(90deg,#ef4444,#f59e0b);
+  border-color: transparent;
+}
+.pill {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
 
-@media (max-width: 1020px){
-  .table{grid-template-columns:1fr;grid-template-rows:auto auto auto}
-  .side{order:2;flex-direction:row;justify-content:space-between}
+/* Pantalla completa y rotación */
+#fullscreenBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+  opacity: .95;
+}
+.rotate-hint {
+  position: fixed;
+  inset: auto 0 20px 0;
+  margin: auto;
+  width: max-content;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  text-align: center;
+}
+.hidden { display: none; }
+
+/* Pantallas */
+.screen {
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.screen.shown {
+  display: flex;
+}
+
+/* Paneles y lobby */
+.panel {
+  width: min(940px,96vw);
+  background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 16px;
+}
+.lobby-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  padding: 12px;
+}
+.card input {
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+}
+.room-info {
+  margin-top: 12px;
+}
+.players {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.player-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+/* Barra superior */
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.brand {
+  font-weight: 700;
+}
+
+/* Tablero principal */
+.table {
+  display: grid;
+  grid-template-columns: 240px 1fr 360px;
+  gap: 12px;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 14px;
+}
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.stack {
+  position: relative;
+  width: 160px;
+  height: 200px;
+}
+.card.back {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#93c5fd,#86efac);
+  border: 2px solid rgba(255,255,255,.6);
+}
+.discard {
+  width: 160px;
+  height: 200px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px dashed rgba(255,255,255,.2);
+}
+.log {
+  height: 240px;
+  overflow: auto;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* Tableros de jugadores */
+.boards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap: 12px;
+}
+.board {
+  background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 10px;
+}
+.board h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 6px;
+}
+.slots {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+}
+.slot {
+  height: 146px;
+    width: 106px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.slot .badge {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.5);
+}
+.slot.healthy { box-shadow: inset 0 0 36px rgba(16,185,129,.25); }
+.slot.infected { box-shadow: inset 0 0 36px rgba(239,68,68,.28); }
+
+/* 🃏 Cartas con imágenes completas */
+.face {
+  width: 110px;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* ocupa todo el contenedor sin deformarse */
+  object-position: center; /* centrada */
+  border-radius: 12px;
+}
+
+/* Zona de mano */
+.hand-area {
+  background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 10px;
+}
+.hand {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 170px;
+}
+
+/* Mensajes emergentes */
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8%;
+  background: rgba(6,95,70,.9);
+  color: #dcfce7;
+  padding: 10px 14px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+}
+.toast.show { opacity: 1; }
+
+/* Responsivo */
+@media (max-width: 1020px) {
+  .table {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .side {
+    order: 2;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
