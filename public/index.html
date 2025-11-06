@@ -2,16 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Virus LAN — Salas con código</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>RECICLON</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <button id="fullscreenBtn" class="btn ghost small">⛶ Pantalla completa</button>
+  <div id="rotateHint" class="rotate-hint hidden">📱 Gira tu dispositivo a horizontal</div>
+
   <div id="app">
     <section id="screen-lobby" class="screen shown">
       <div class="panel">
-        <h1>🧫 Virus — Multijugador LAN</h1>
+        <h1>♻️ RECICLON</h1>
         <p class="muted">Crea una sala o únete con un código. Todos deben estar en la misma Wi‑Fi.</p>
 
         <div class="lobby-grid">
@@ -41,9 +44,8 @@
 
     <section id="screen-game" class="screen">
       <header class="topbar">
-        <div class="left"><span class="brand">🧬 Virus</span> <span id="badgeCode" class="pill"></span></div>
+        <div class="left"><span class="brand">♻️ RECICLON </span> <span id="badgeCode" class="pill"></span></div>
         <div id="turnInfo" class="pill">Turno: —</div>
-        <div class="right"><span class="muted">LAN</span></div>
       </header>
 
       <main class="table">
