@@ -1,7 +1,7 @@
 {
-  "name": "virus-lan-rooms",
+  "name": "virus-lan-rooms-final",
   "version": "1.0.0",
-  "description": "Juego de mesa Virus en web, multijugador LAN con salas por c\u00f3digo (Node.js + Socket.io)",
+  "description": "Virus (juego de mesa) en web con salas por c\u00f3digo, pantalla completa, orientaci\u00f3n horizontal y fondo m\u00e9dico responsive. LAN con Socket.io.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
