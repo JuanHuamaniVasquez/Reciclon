@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="lobby">
   <button id="fullscreenBtn" class="btn ghost small">⛶ Pantalla completa</button>
   <div id="rotateHint" class="rotate-hint hidden">📱 Gira tu dispositivo a horizontal</div>
 
@@ -15,7 +15,7 @@
     <section id="screen-lobby" class="screen shown">
       <div class="panel">
         <h1>♻️ RECICLON</h1>
-        <p class="muted">Crea una sala o únete con un código. Todos deben estar en la misma Wi‑Fi.</p>
+        <p class="muted">Crea una sala o únete con un código. Todos deben estar en la misma Wi-Fi.</p>
 
         <div class="lobby-grid">
           <div class="card">
@@ -51,7 +51,7 @@
       <main class="table">
         <aside class="side">
           <div class="stack">
-            <div id="deck" class="card back"></div>
+            <div id="deck" class="card back" title="Robar (si el servidor lo soporta)"></div>
             <div id="deckCount" class="pill small">0</div>
           </div>
           <div class="stack">
@@ -65,6 +65,7 @@
 
         <aside class="hand-area">
           <h3>Tu mano</h3>
+          <div id="cardHint" class="card-hint">Toca o pasa el mouse por una carta para ver qué hace.</div>
           <div id="hand" class="hand"></div>
           <div class="actions">
             <button id="discardSel" class="btn danger">Descartar (1–3)</button>
@@ -73,18 +74,12 @@
       </main>
     </section>
 
-    <div id="toast" class="toast"></div>
+    <div id="toast" class="toast" aria-live="polite"></div>
   </div>
 
-  <template id="cardTpl">
-    <div class="card face">
-      <div class="icon"></div>
-      <div class="title"></div>
-      <div class="tag"></div>
-    </div>
-  </template>
-
+  <!-- Socket.io (global io) -->
   <script src="/socket.io/socket.io.js"></script>
-  <script src="game.js"></script>
+  <!-- Entrada en módulos -->
+  <script type="module" src="main.js"></script>
 </body>
 </html>

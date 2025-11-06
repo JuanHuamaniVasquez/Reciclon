@@ -119,18 +119,15 @@ function buildDeck(){
   for(let i=0;i<5;i++) deck.push(card('organ','green','Estómago'));
   for(let i=0;i<5;i++) deck.push(card('organ','blue','Cerebro'));
   for(let i=0;i<5;i++) deck.push(card('organ','yellow','Hueso'));
-  deck.push(card('organ','wild','Órgano comodín'));
   for(let i=0;i<4;i++) deck.push(card('virus','red','Virus rojo'));
   for(let i=0;i<4;i++) deck.push(card('virus','green','Virus verde'));
   for(let i=0;i<4;i++) deck.push(card('virus','blue','Virus azul'));
   for(let i=0;i<4;i++) deck.push(card('virus','yellow','Virus amarillo'));
-  deck.push(card('virus','wild','Virus comodín'));
   for(let i=0;i<4;i++) deck.push(card('medicine','red','Medicina roja'));
   for(let i=0;i<4;i++) deck.push(card('medicine','green','Medicina verde'));
   for(let i=0;i<4;i++) deck.push(card('medicine','blue','Medicina azul'));
   for(let i=0;i<4;i++) deck.push(card('medicine','yellow','Medicina amarilla'));
-  for(let i=0;i<4;i++) deck.push(card('medicine','wild','Medicina comodín'));
-  const treatments = ['Trasplante','Ladrón de órganos','Contagio','Guante de látex','Error médico'];
+  const treatments = ['Trasplante','Ladrón de órganos','Contagio','Guante','Error médico'];
   treatments.forEach(t=>{ deck.push(card('treatment',null,t)); deck.push(card('treatment',null,t)); });
   return deck.map(c=>({...c, id: uid()}));
 }

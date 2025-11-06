@@ -8,17 +8,12 @@
   --danger: #ef4444;
 }
 
-* {
-  box-sizing: border-box;
-}
-html, body {
-  height: 100%;
-  margin: 0;
-}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
 
 body {
   font-family: Poppins, system-ui, Segoe UI, Arial;
-  background: radial-gradient(1200px 800px at 20% -10%, #25832e 0%, #123a20 60%) no-repeat center center fixed;
+  background: radial-gradient(1200px 800px at 20% -10%, #1d6e2e 0%, #12381a 60%) no-repeat center center fixed;
   background-size: cover;
   color: var(--text);
   height: 100vh;
@@ -26,10 +21,7 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3 {
-  margin: 0;
-}
-
+h1, h2, h3 { margin: 0; }
 .muted { opacity: .75; }
 .small { font-size: 12px; }
 
@@ -46,9 +38,7 @@ h1, h2, h3 {
   background: linear-gradient(90deg,#10b981,#22c55e);
   border-color: transparent;
 }
-.btn.ghost {
-  background: rgba(0,0,0,.35);
-}
+.btn.ghost { background: rgba(0,0,0,.35); }
 .btn.danger {
   background: linear-gradient(90deg,#ef4444,#f59e0b);
   border-color: transparent;
@@ -89,9 +79,7 @@ h1, h2, h3 {
   justify-content: center;
   padding: 18px;
 }
-.screen.shown {
-  display: flex;
-}
+.screen.shown { display: flex; }
 
 /* Paneles y lobby */
 .panel {
@@ -122,9 +110,7 @@ h1, h2, h3 {
   background: rgba(255,255,255,.06);
   color: #fff;
 }
-.room-info {
-  margin-top: 12px;
-}
+.room-info { margin-top: 12px; }
 .players {
   display: flex;
   gap: 8px;
@@ -148,9 +134,7 @@ h1, h2, h3 {
   background: linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
-.brand {
-  font-weight: 700;
-}
+.brand { font-weight: 700; }
 
 /* Tablero principal */
 .table {
@@ -162,37 +146,25 @@ h1, h2, h3 {
   margin: 0 auto;
   padding: 14px;
 }
-.side {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.stack {
-  position: relative;
-  width: 160px;
-  height: 200px;
-}
+.side { display: flex; flex-direction: column; gap: 10px; }
+.stack { position: relative; width: 160px; height: 200px; }
 .card.back {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   border-radius: 16px;
   background: linear-gradient(135deg,#93c5fd,#86efac);
   border: 2px solid rgba(255,255,255,.6);
 }
 .discard {
-  width: 160px;
-  height: 200px;
+  width: 160px; height: 200px;
   border-radius: 16px;
   background: rgba(255,255,255,.04);
   border: 1px dashed rgba(255,255,255,.2);
 }
 .log {
-  height: 240px;
-  overflow: auto;
+  height: 240px; overflow: auto;
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;
-  padding: 8px;
+  border-radius: 12px; padding: 8px;
 }
 
 /* Tableros de jugadores */
@@ -204,13 +176,10 @@ h1, h2, h3 {
 .board {
   background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 14px;
-  padding: 10px;
+  border-radius: 14px; padding: 10px;
 }
 .board h4 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   margin: 0 0 6px;
 }
 .slots {
@@ -219,24 +188,16 @@ h1, h2, h3 {
   gap: 8px;
 }
 .slot {
-  height: 146px;
-    width: 106px;
+  height: 146px; width: 106px;
   border-radius: 12px;
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
 }
 .slot .badge {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  font-size: 11px;
-  padding: 3px 7px;
-  border-radius: 999px;
+  position: absolute; right: 6px; bottom: 6px;
+  font-size: 11px; padding: 3px 7px; border-radius: 999px;
   background: rgba(0,0,0,.5);
 }
 .slot.healthy { box-shadow: inset 0 0 36px rgba(16,185,129,.25); }
@@ -244,55 +205,42 @@ h1, h2, h3 {
 
 /* 🃏 Cartas con imágenes completas */
 .face {
-  width: 110px;
-  height: 150px;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border: 2px solid #e5e7eb;
+  width: 110px; height: 150px;
+  border-radius: 12px; overflow: hidden; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 2px solid #e5e7eb;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  outline: none;
 }
 .face img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;       /* ocupa todo el contenedor sin deformarse */
-  object-position: center; /* centrada */
-  border-radius: 12px;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center; border-radius: 10px;
 }
+.face:focus { box-shadow: 0 0 0 3px rgba(34,197,94,.6); }
 
-/* Zona de mano */
 .hand-area {
   background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-  padding: 10px;
+  border-radius: 16px; padding: 10px;
 }
-.hand {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  min-height: 170px;
+.hand { display: flex; gap: 10px; flex-wrap: wrap; min-height: 170px; }
+
+/* Selección para descartar */
+.discard-mode .face { cursor: pointer; }
+.face.selecting {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(239,68,68,.85);
+  box-shadow: 0 6px 16px rgba(239,68,68,.35);
+  transition: .15s ease;
 }
 
 /* Mensajes emergentes */
 .toast {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 8%;
-  background: rgba(6,95,70,.9);
-  color: #dcfce7;
-  padding: 10px 14px;
-  border-radius: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: .2s;
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: 8%; background: rgba(6,95,70,.9); color: #dcfce7;
+  padding: 10px 14px; border-radius: 12px; opacity: 0;
+  pointer-events: none; transition: .2s;
 }
 .toast.show { opacity: 1; }
 
@@ -302,9 +250,5 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
   }
-  .side {
-    order: 2;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+  .side { order: 2; flex-direction: row; justify-content: space-between; }
 }
