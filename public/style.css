@@ -18,7 +18,7 @@ html, body {
 
 body {
   font-family: Poppins, system-ui, Segoe UI, Arial;
-  background: radial-gradient(1200px 800px at 20% -10%, #173051 0%, #0b1220 60%) no-repeat center center fixed;
+  background: radial-gradient(1200px 800px at 20% -10%, #25832e 0%, #123a20 60%) no-repeat center center fixed;
   background-size: cover;
   color: var(--text);
   height: 100vh;
